@@ -19,10 +19,12 @@ const RANK_PARTICLES: Record<string, string | null> = {
 };
 
 const UPGRADES = [
-  { id: "secretary", label: "秘書を雇う", cost: 50,   rate: 1,  emoji: "👩‍💼" },
+  { id: "secretary", label: "秘書を雇う",  cost: 50,   rate: 1,  emoji: "👩‍💼" },
   { id: "driver",    label: "運転手を雇う", cost: 500,  rate: 5,  emoji: "🚗" },
   { id: "sp",        label: "SPを雇う",    cost: 2000, rate: 20, emoji: "🕴️" },
 ];
+
+const GAME_URL = "https://my-clicker-game-zeta.vercel.app";
 
 export function ClickerGame() {
   const [score, setScore] = useState(0);
@@ -81,6 +83,20 @@ export function ClickerGame() {
     if (scoreRef.current < cost) return;
     setScore(s => s - cost);
     setPurchased(prev => ({ ...prev, [upgradeId]: (prev[upgradeId] ?? 0) + 1 }));
+  };
+
+  const handleShareFarcaster = () => {
+    const rank = getRank(score);
+    const text = `🏛️ 議員タップで【${rank.name}】になったで！\n支持率: ${score.toLocaleString()}票\n「${rank.message}」\n遊んでみてや👇\n${GAME_URL}`;
+    const url = `https://warpcast.com/~/compose?text=${encodeURIComponent(text)}`;
+    window.open(url, "_blank");
+  };
+
+  const handleShareX = () => {
+    const rank = getRank(score);
+    const text = `🏛️ 議員タップで【${rank.name}】になったで！\n支持率: ${score.toLocaleString()}票\n遊んでみてや👇\n${GAME_URL}\n#議員タップ #FarcasterMiniApp`;
+    const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`;
+    window.open(url, "_blank");
   };
 
   const rank = getRank(score);
@@ -209,7 +225,41 @@ export function ClickerGame() {
         タップ！🗳️
       </button>
 
-      <div style={{ marginTop: "24px", width: "100%", maxWidth: "300px" }}>
+      <div style={{ marginTop: "16px", display: "flex", gap: "8px" }}>
+        <button
+          onClick={handleShareFarcaster}
+          style={{
+            padding: "10px 20px",
+            fontSize: "0.85rem",
+            fontWeight: "bold",
+            background: "linear-gradient(135deg, #8b5cf6, #6d28d9)",
+            border: "none",
+            borderRadius: "50px",
+            color: "white",
+            cursor: "pointer",
+            boxShadow: "0 4px 12px rgba(139,92,246,0.4)",
+          }}
+        >
+          🟣 Farcasterでシェア
+        </button>
+        <button
+          onClick={handleShareX}
+          style={{
+            padding: "10px 20px",
+            fontSize: "0.85rem",
+            fontWeight: "bold",
+            background: "linear-gradient(135deg, #000, #333)",
+            border: "1px solid rgba(255,255,255,0.2)",
+            borderRadius: "50px",
+            color: "white",
+            cursor: "pointer",
+          }}
+        >
+          𝕏 でシェア
+        </button>
+      </div>
+
+      <div style={{ marginTop: "16px", width: "100%", maxWidth: "300px" }}>
         <p style={{ fontSize: "0.85rem", opacity: 0.6, marginBottom: "8px", textAlign: "center" }}>
           🏢 スタッフを雇う
         </p>
