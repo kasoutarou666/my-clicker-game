@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef } from "react";
+import { useState, useCallback, useRef, useEffect } from "react";
 import { getRank, getNextRank, getProgress } from "../lib/gameLogic";
 
 interface Particle {
@@ -18,18 +18,38 @@ const RANK_PARTICLES: Record<string, string | null> = {
   "内閣総理大臣": "💎",
 };
 
+const UPGRADES = [
+  { id: "secretary", label: "秘書を雇う", cost: 50,   rate: 1,  emoji: "👩‍💼" },
+  { id: "driver",    label: "運転手を雇う", cost: 500,  rate: 5,  emoji: "🚗" },
+  { id: "sp",        label: "SPを雇う",    cost: 2000, rate: 20, emoji: "🕴️" },
+];
+
 export function ClickerGame() {
   const [score, setScore] = useState(0);
   const [clicking, setClicking] = useState(false);
   const [particles, setParticles] = useState<Particle[]>([]);
+  const [purchased, setPurchased] = useState<Record<string, number>>({});
   const counterRef = useRef(0);
+  const scoreRef = useRef(0);
+
+  scoreRef.current = score;
+
+  const autoRate = UPGRADES.reduce((sum, u) => sum + u.rate * (purchased[u.id] ?? 0), 0);
+
+  useEffect(() => {
+    if (autoRate === 0) return;
+    const interval = setInterval(() => {
+      setScore(s => s + autoRate);
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [autoRate]);
 
   const handleClick = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
     setScore(s => s + 1);
     setClicking(true);
     setTimeout(() => setClicking(false), 100);
 
-    const rank = getRank(score);
+    const rank = getRank(scoreRef.current);
     const particleEmoji = RANK_PARTICLES[rank.name];
     if (!particleEmoji) return;
 
@@ -55,7 +75,13 @@ export function ClickerGame() {
     setTimeout(() => {
       setParticles(prev => prev.filter(p => !newParticles.find(n => n.id === p.id)));
     }, 800);
-  }, [score]);
+  }, []);
+
+  const handleBuy = (upgradeId: string, cost: number) => {
+    if (scoreRef.current < cost) return;
+    setScore(s => s - cost);
+    setPurchased(prev => ({ ...prev, [upgradeId]: (prev[upgradeId] ?? 0) + 1 }));
+  };
 
   const rank = getRank(score);
   const nextRank = getNextRank(score);
@@ -131,6 +157,12 @@ export function ClickerGame() {
         {score.toLocaleString()} 票
       </p>
 
+      {autoRate > 0 && (
+        <p style={{ fontSize: "0.8rem", opacity: 0.6, margin: "0 0 8px" }}>
+          ⚡ {autoRate}票/秒 自動取得中
+        </p>
+      )}
+
       {nextRank && (
         <div style={{ width: "100%", maxWidth: "300px", margin: "12px 0" }}>
           <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.8rem", opacity: 0.7, marginBottom: "4px" }}>
@@ -158,7 +190,7 @@ export function ClickerGame() {
       <button
         onClick={handleClick}
         style={{
-          marginTop: "24px",
+          marginTop: "16px",
           padding: "20px 48px",
           fontSize: "1.2rem",
           fontWeight: "bold",
@@ -177,7 +209,39 @@ export function ClickerGame() {
         タップ！🗳️
       </button>
 
-      <p style={{ marginTop: "32px", fontSize: "0.8rem", opacity: 0.5 }}>
+      <div style={{ marginTop: "24px", width: "100%", maxWidth: "300px" }}>
+        <p style={{ fontSize: "0.85rem", opacity: 0.6, marginBottom: "8px", textAlign: "center" }}>
+          🏢 スタッフを雇う
+        </p>
+        {UPGRADES.map(u => (
+          <button
+            key={u.id}
+            onClick={() => handleBuy(u.id, u.cost)}
+            disabled={score < u.cost}
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              width: "100%",
+              marginBottom: "8px",
+              padding: "10px 16px",
+              background: score >= u.cost
+                ? "rgba(255,255,255,0.15)"
+                : "rgba(255,255,255,0.05)",
+              border: "1px solid rgba(255,255,255,0.2)",
+              borderRadius: "12px",
+              color: score >= u.cost ? "white" : "rgba(255,255,255,0.3)",
+              cursor: score >= u.cost ? "pointer" : "not-allowed",
+              fontSize: "0.85rem",
+            }}
+          >
+            <span>{u.emoji} {u.label} {purchased[u.id] ? `(${purchased[u.id]}人)` : ""}</span>
+            <span>+{u.rate}票/秒 | {u.cost.toLocaleString()}票</span>
+          </button>
+        ))}
+      </div>
+
+      <p style={{ marginTop: "16px", fontSize: "0.8rem", opacity: 0.5 }}>
         タップして支持率を上げろ！
       </p>
     </div>
