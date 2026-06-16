@@ -1,1 +1,17 @@
-{}
+{
+  "accountAssociation": {
+    "header": "",
+    "payload": "",
+    "signature": ""
+  },
+  "frame": {
+    "version": "1",
+    "name": "議員タップ",
+    "iconUrl": "https://my-clicker-game-zeta.vercel.app/og.png",
+    "homeUrl": "https://my-clicker-game-zeta.vercel.app",
+    "imageUrl": "https://my-clicker-game-zeta.vercel.app/og.png",
+    "buttonTitle": "🗳️ 今すぐ遊ぶ",
+    "splashImageUrl": "https://my-clicker-game-zeta.vercel.app/og.png",
+    "splashBackgroundColor": "#1a1a2e"
+  }
+}
