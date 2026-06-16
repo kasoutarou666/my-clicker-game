@@ -115,6 +115,18 @@ export function ClickerGame() {
       </div>
 
       <h2 style={{ fontSize: "1.3rem", marginBottom: "4px" }}>{rank.name}</h2>
+
+      <p style={{
+        fontSize: "0.85rem",
+        opacity: 0.75,
+        margin: "4px 16px 8px",
+        textAlign: "center",
+        fontStyle: "italic",
+        color: "#f5a623",
+      }}>
+        「{rank.message}」
+      </p>
+
       <p style={{ fontSize: "2.5rem", fontWeight: "bold", margin: "8px 0" }}>
         {score.toLocaleString()} 票
       </p>
