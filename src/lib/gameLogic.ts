@@ -1,8 +1,8 @@
 export const RANKS = [
-  { name: "一般市民",     threshold: 0,      emoji: "👤" },
-  { name: "地方議員",     threshold: 100,    emoji: "🏛️" },
-  { name: "国会議員",     threshold: 1000,   emoji: "⭐" },
-  { name: "大　臣",      threshold: 10000,  emoji: "🎖️" },
+  { name: "一般市民",     threshold: 0,      emoji: "🧑" },
+  { name: "地方議員",     threshold: 100,    emoji: "👔" },
+  { name: "国会議員",     threshold: 1000,   emoji: "🎩" },
+  { name: "大　臣",      threshold: 10000,  emoji: "🏅" },
   { name: "内閣総理大臣", threshold: 100000, emoji: "👑" },
 ];
 
