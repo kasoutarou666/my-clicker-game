@@ -1,23 +1,81 @@
-This is a [Vite](https://vitejs.dev) project bootstrapped with [`@farcaster/create-mini-app`](https://github.com/farcasterxyz/miniapps/tree/main/packages/create-mini-app).
+# 🏛️ 議員タップ / Politician Clicker
 
-For documentation and guides, visit [miniapps.farcaster.xyz](https://miniapps.farcaster.xyz/docs/getting-started).
+> タップして支持率を上げろ！あなたは一般市民から内閣総理大臣になれるか？
 
-## `farcaster.json`
+[![Deploy with Vercel](https://vercel.com/button)](https://my-clicker-game-zeta.vercel.app)
 
-The `/.well-known/farcaster.json` is served from the [public
-directory](https://vite.dev/guide/assets) and can be updated by editing
-`./public/.well-known/farcaster.json`.
+🎮 **[今すぐ遊ぶ](https://my-clicker-game-zeta.vercel.app)**
 
-You can also use the `public` directory to serve a static image for `splashBackgroundImageUrl`.
+---
 
-## Frame Embed
+## 🎯 ゲーム概要
 
-Add a the `fc:frame` in `index.html` to make your root app URL sharable in feeds:
+政治家モチーフのクリッカーゲームです。
+タップするたびに支持率（票数）が上がり、ランクアップしていきます。
+スタッフを雇って自動で票を集めることも可能です。
 
-```html
-  <head>
-    <!--- other tags --->
-    <meta name="fc:frame" content='{"version":"next","imageUrl":"https://placehold.co/900x600.png?text=Frame%20Image","button":{"title":"Open","action":{"type":"launch_frame","name":"App Name","url":"https://app.com"}}}' /> 
-  </head>
+---
+
+## 🕹️ 遊び方
+
+1. 「タップ！」ボタンを押して票を集める
+2. 100票で地方議員にランクアップ（お金が飛び散るで！）
+3. スタッフを雇って自動で票を集める
+4. 最終目標は内閣総理大臣👑
+
+---
+
+## 📊 ランク一覧
+
+| ランク          | 必要票数    | 一言                                                                 |
+| --------------- | ----------- | -------------------------------------------------------------------- |
+| 👤 一般市民     | 0票〜       | まずは一票から。あなたの一票が政治を変える…かもしれない              |
+| 👔 地方議員     | 100票〜     | 市民のために働くか、市民からお金を吸い上げるか。それはあなた次第です |
+| 🎩 国会議員     | 1,000票〜   | 財務省のレクをお待ちください                                         |
+| 🏅 大臣         | 10,000票〜  | 天下り先はもう決まっています                                         |
+| 👑 内閣総理大臣 | 100,000票〜 | 国民を苦しめて食う飯と国民を幸せにして食う飯はどっちが美味い？       |
+
+---
+
+## ⚡ スタッフ一覧
+
+| スタッフ  | コスト  | 効果     |
+| --------- | ------- | -------- |
+| 👩‍💼 秘書   | 50票    | +1票/秒  |
+| 🚗 運転手 | 500票   | +5票/秒  |
+| 🕴️ SP     | 2,000票 | +20票/秒 |
+
+---
+
+## 🛠️ 技術スタック
+
+- **Framework**: Vite + React + TypeScript
+- **Platform**: Farcaster Mini App
+- **Deploy**: Vercel
+- **SDK**: @farcaster/frame-sdk
+
+---
+
+## 🚀 ローカル開発
+
+```bash
+git clone https://github.com/kasoutarou666/my-clicker-game.git
+cd my-clicker-game
+npm install
+npm run dev
 ```
 
+---
+
+## 📅 今後の予定
+
+- [ ] スコアのローカル保存
+- [ ] ランクアップ演出の強化
+- [ ] 2本目のゲーム開発
+- [ ] Farcaster フレーム対応
+
+---
+
+## 📝 ライセンス
+
+MIT
