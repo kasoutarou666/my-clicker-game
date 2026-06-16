@@ -1,0 +1,32 @@
+<svg width="1200" height="630" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a1a2e"/>
+      <stop offset="50%" style="stop-color:#16213e"/>
+      <stop offset="100%" style="stop-color:#0f3460"/>
+    </linearGradient>
+    <linearGradient id="btn" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#e94560"/>
+      <stop offset="100%" style="stop-color:#f5a623"/>
+    </linearGradient>
+  </defs>
+
+  <!-- 背景 -->
+  <rect width="1200" height="630" fill="url(#bg)"/>
+
+  <!-- タイトル -->
+  <text x="600" y="120" text-anchor="middle" font-family="sans-serif" font-size="72" font-weight="bold" fill="white">🏛️ 議員タップ</text>
+
+  <!-- キャラクター -->
+  <text x="600" y="300" text-anchor="middle" font-size="180">👔</text>
+
+  <!-- ランク -->
+  <text x="600" y="390" text-anchor="middle" font-family="sans-serif" font-size="48" fill="white">一般市民 → 内閣総理大臣を目指せ！</text>
+
+  <!-- サブテキスト -->
+  <text x="600" y="460" text-anchor="middle" font-family="sans-serif" font-size="36" fill="#f5a623" font-style="italic">「財務省のレクをお待ちください」</text>
+
+  <!-- ボタン風装飾 -->
+  <rect x="400" y="510" width="400" height="70" rx="35" fill="url(#btn)"/>
+  <text x="600" y="555" text-anchor="middle" font-family="sans-serif" font-size="32" font-weight="bold" fill="white">今すぐ遊ぶ 🗳️</text>
+</svg>

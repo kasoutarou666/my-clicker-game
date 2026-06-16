@@ -24,6 +24,7 @@
     "@types/react-dom": "^18.3.0",
     "@vitejs/plugin-react": "^4.2.1",
     "@wagmi/cli": "latest",
+    "sharp": "^0.35.1",
     "typescript": "^5.8.3",
     "vite": "^5.2.11"
   }
