@@ -25,19 +25,43 @@ const UPGRADES = [
 ];
 
 const GAME_URL = "https://my-clicker-game-zeta.vercel.app";
+const SAVE_KEY = "politician-clicker-save";
+
+interface SaveData {
+  score: number;
+  purchased: Record<string, number>;
+}
+
+function loadSave(): SaveData {
+  try {
+    const raw = localStorage.getItem(SAVE_KEY);
+    if (!raw) return { score: 0, purchased: {} };
+    return JSON.parse(raw);
+  } catch {
+    return { score: 0, purchased: {} };
+  }
+}
+
+function saveData(score: number, purchased: Record<string, number>) {
+  try {
+    localStorage.setItem(SAVE_KEY, JSON.stringify({ score, purchased }));
+  } catch {}
+}
 
 export function ClickerGame() {
-  const [score, setScore] = useState(0);
+  const initial = loadSave();
+  const [score, setScore] = useState(initial.score);
   const [clicking, setClicking] = useState(false);
   const [particles, setParticles] = useState<Particle[]>([]);
-  const [purchased, setPurchased] = useState<Record<string, number>>({});
+  const [purchased, setPurchased] = useState<Record<string, number>>(initial.purchased);
   const counterRef = useRef(0);
-  const scoreRef = useRef(0);
+  const scoreRef = useRef(score);
 
   scoreRef.current = score;
 
   const autoRate = UPGRADES.reduce((sum, u) => sum + u.rate * (purchased[u.id] ?? 0), 0);
 
+  // オートクリック
   useEffect(() => {
     if (autoRate === 0) return;
     const interval = setInterval(() => {
@@ -45,6 +69,14 @@ export function ClickerGame() {
     }, 1000);
     return () => clearInterval(interval);
   }, [autoRate]);
+
+  // セーブ（3秒ごと）
+  useEffect(() => {
+    const interval = setInterval(() => {
+      saveData(scoreRef.current, purchased);
+    }, 3000);
+    return () => clearInterval(interval);
+  }, [purchased]);
 
   const handleClick = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
     setScore(s => s + 1);
@@ -82,7 +114,11 @@ export function ClickerGame() {
   const handleBuy = (upgradeId: string, cost: number) => {
     if (scoreRef.current < cost) return;
     setScore(s => s - cost);
-    setPurchased(prev => ({ ...prev, [upgradeId]: (prev[upgradeId] ?? 0) + 1 }));
+    setPurchased(prev => {
+      const next = { ...prev, [upgradeId]: (prev[upgradeId] ?? 0) + 1 };
+      saveData(scoreRef.current - cost, next);
+      return next;
+    });
   };
 
   const handleShareFarcaster = () => {
